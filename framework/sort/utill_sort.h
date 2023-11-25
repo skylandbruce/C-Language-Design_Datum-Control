@@ -8,7 +8,9 @@
 #define EQU 0
 
 
-static int compare_int(const void *selected, const void *target);
-static int compare_str(char *selected, char *target);
+// static int compare_int(const void *selected, const void *target);
+// static int compare_str(const void *selected, const  void *target);
+int compare_int(const void *selected, const void *target);
+int compare_str(const void *selected, const  void *target);
 
 void swap_pointers(void **selected, void **target);

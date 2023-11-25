@@ -3,9 +3,14 @@
  * Since 2023.11
 */
 #include <stdio.h>
+#define MAX_ENTRY_IO 20
+#define ENTRY_INIT 7 // should be less than MAX_ENTRY_IO 
+#define ENTRY_SUP 12  // 3 2 2 2 1 1 1 \ // should be less than MAX_ENTRY_IO
 
-#define MAX_ENTRY_INIT 7 
-#define ENTRY_SUP 12  // 3 2 2 2 1 1 1 
+#define PATTERN_INT(amount) int pattern_##amount[amount] // *** devide ENTRY_SUP pattern **
+#define SET_PATTERN_INT(name, amount) \
+    int *name = pattern_##amount
+
 #define NAME_LENTH 64 
 
 #ifndef DATUM_H

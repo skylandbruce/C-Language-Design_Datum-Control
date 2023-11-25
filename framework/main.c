@@ -18,7 +18,7 @@ int main(){
     BiData *tissue_bidata;
 
     // 외부 Datum 입출력 
-    cell_datum_io = GET_INSTANCE(Datum, MAX_ENTRY_INIT);
+    cell_datum_io = GET_INSTANCE(Datum, MAX_ENTRY_IO);
     if(cell_datum_io == NULL) return -1;
 
     // 내부 Buffer Datum
@@ -47,18 +47,21 @@ int main(){
 
 ///////////initialize tissues////////
     for(int i=0; i<MAX_TISSUE; i++){
-        if(pull_out_DLinkedList(&cell_tissue[i], &buffer_dlist, MAX_ENTRY_INIT) == -1){
+        if(pull_out_DLinkedList(&cell_tissue[i], &buffer_dlist, ENTRY_INIT) == -1){
             printf("not enough buffer count=%d\n",buffer_dlist.count);
             return -1;
         } 
-        PATCH_DATUM(&cell_tissue[i], cell_datum_io, MAX_ENTRY_INIT);
-        // MSG_ARRAY(Datum)("cell_datum", cell_datum_io, MAX_ENTRY_INIT);
+        PATCH_DATUM(&cell_tissue[i], cell_datum_io, ENTRY_INIT);
+        // MSG_ARRAY(Datum)("cell_datum", cell_datum_io, ENTRY_INIT);
         // MSG_ARRAY(DLinkedList)("tissue", &cell_tissue[i], 0);
     }   
 
 ///// == work flow == [[[[[[[[[[[[[[ 
-    #define MAX_LOOP 5
+    #define MAX_LOOP 3
     SET_INSTANCE(DLinkedList, buffer_dlist_sup);
+
+    PATTERN_INT(MAX_TISSUE) = {3,2,2,2,1,1,1};
+    SET_PATTERN_INT(pattern_ENTRY_SUP, MAX_TISSUE);
 
     for(int j=0; j<MAX_LOOP; j++){
 
@@ -68,29 +71,34 @@ int main(){
             // MSG_ARRAY(DLinkedList)("output tissue", &cell_tissue[i], 0);
         }
 
+        SET_ASCEND;
+        issort = issort_DLinkedList;
+        issort(&tissue_dlist, compare_int);
+
         // buffer로 부터 bidata를 가져와서 MAX_TISSUE 크기의 tissue를 만든다
-        if(pull_out_DLinkedList(&buffer_dlist_sup, &buffer_dlist, MAX_TISSUE) == -1){
+        if(pull_out_DLinkedList(&buffer_dlist_sup, &buffer_dlist, ENTRY_SUP) == -1){
             printf("not enough buffer count=%d\n",buffer_dlist.count);
             return -1;
         } 
         // buffer_dlist_sup tissue에 MAX_TISSUE 크기의 데이터(Datum)를 생성한 cell_datum_io를 patch 한다 
-        PATCH_DATUM(&buffer_dlist_sup, cell_datum_io, MAX_TISSUE);
-        // MSG_ARRAY(DLinkedList)("tissue", &buffer_dlist_sup, 0);
+        PATCH_DATUM(&buffer_dlist_sup, cell_datum_io, ENTRY_SUP);
+        MSG_ARRAY(DLinkedList)("tissue_sup_datum", &buffer_dlist_sup, 0);
 
         // 새로 생성한 데이터(BiData)를 각 tissue에 분배하여 추가한다
         BiData *current = tissue_dlist.head;
-        DLinkedList *datum_cell_tissue;
+        DLinkedList *tissue;
         for(int i=0; i<tissue_dlist.count; i++){
-            datum_cell_tissue = (DLinkedList *)current->datum;
-            datum_cell_tissue->insert(datum_cell_tissue, buffer_dlist_sup.extract(&buffer_dlist_sup, buffer_dlist_sup.head));
-
-            MSG_ARRAY(DLinkedList)("supplied tissue", datum_cell_tissue, 0);
+            tissue = (DLinkedList *)current->datum;
+            for(int j=0; j<pattern_ENTRY_SUP[i]; j++){
+                tissue->insert(tissue, buffer_dlist_sup.extract(&buffer_dlist_sup, buffer_dlist_sup.head));
+            }
+            MSG_ARRAY(DLinkedList)("supplied tissue", tissue, 0);
             MOVETO_NEXT(current);
         }
 
         // MSG_ARRAY(BiData)("buffer BiData", buffer_bidata, MAX_BUFFER);
         // MSG_ARRAY(DLinkedList)("buffer DLinkedList", &buffer_dlist, 0);
-        // printf("\n buffer count = %d\n\n", buffer_dlist.count);
+        printf("\n buffer count = %d\n\n", buffer_dlist.count);
     } // for(j)
 
 //// == work flow == ]]]]]]]]]]]]]]

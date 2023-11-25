@@ -9,7 +9,7 @@
 
 int msg_Datum(char *msg, Datum *cell, int count){
 #ifdef _DEBUG_    
-    int max = (count <= MAX_ENTRY_INIT) ? count :  MAX_ENTRY_INIT;
+    int max = (count <= ENTRY_INIT) ? count :  ENTRY_INIT;
     printf("\n === %s === \n",msg);
     for (int i = 0; i < max; i++) {
         printf("%s.value = %d\n", cell[i].name, cell[i].value);

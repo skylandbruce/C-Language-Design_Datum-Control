@@ -7,7 +7,7 @@
 #include "utill_sort.h"
 
 
-static int compare_int(const void *selected, const void *target){
+int compare_int(const void *selected, const void *target){
     if(*(const int *)target < *(const int *)selected) 
         return HIGH;
     else if(*(const int *)selected < *(const int *)target)
@@ -16,9 +16,9 @@ static int compare_int(const void *selected, const void *target){
         return 0;    
 }
 
-static int compare_str(char *selected, char *target){
+int compare_str(const void *selected, const void *target){
     // strcmp 함수를 사용하여 두 문자열을 비교
-    int result = strcmp(selected, target);
+    int result = strcmp((const char *)selected, (const char *)target);
 
     // 비교 결과에 따라 우선순위를 반환
     if (result < 0) {

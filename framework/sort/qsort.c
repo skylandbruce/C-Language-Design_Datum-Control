@@ -7,7 +7,7 @@
 #include "qsort.h"
 
 /* 
-int qsort(OrderDLinkedList *OrderList, Datum *datum, int count, int (*compare)(Datum *selected, Datum *target)){
+int qsort(DLinkedList *DList, int (*compare)(void *selected, void *target)){
 
     return 0;
 }

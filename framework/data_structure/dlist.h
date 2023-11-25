@@ -11,8 +11,25 @@
 #define NOTUSED 0x00001000
 #define DIRTY   0x00001111
 
-#define MAX_BUFFER 56
-#define MAX_TISSUE 7
+#define HEAD 0
+#define TAIL count-1
+#define IS_HEAD(selected) selected->front == NULL  
+#define IS_TAIL(selected) selected->rear == NULL  
+
+// DLinkedList, BiData Operation 
+#define CURRENT(i) i
+#define NEXT(i) i+1
+#define TAIL count-1
+
+#define GET_NEXT(selected) (selected->rear)
+#define GET_PREV(selected) (selected->front)
+#define MOVETO_NEXT(selected) ((selected) = (selected)->rear)
+#define MOVETO_PREV(selected) ((selected) = (selected)->front)
+
+#define JUMP_NEXT(element, step) \
+    for(int i=0; i<step; i++) MOVETO_NEXT(element);
+#define JUMP_PREV(element, step) \
+    for(int i=0; i<step; i++) MOVETO_PREV(element);
 
 #ifndef DLIST_H
 #define DLIST_H

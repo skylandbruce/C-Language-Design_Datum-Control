@@ -121,16 +121,11 @@ int put_back_BiData(DLinkedList *List, BiData *selected, DLinkedList * buffer){
     return 0;
 }
 
-
-#if 0
-
 // 데이터 삽입 함수 구현
-int insert_bidata_prev(DLinkedList *List, BiDatat *selected, BiData *element) {
-
+int insert_bidata_prev(DLinkedList *List, BiData *element, BiData *to_element){
     // LinkedList가 비어 있을 경우
     if(List->count == 0){
         element->front=NULL, element->rear=NULL;
-        // List->current=element;
         List->head=element;
         List->tail=element;
 
@@ -139,23 +134,21 @@ int insert_bidata_prev(DLinkedList *List, BiDatat *selected, BiData *element) {
     }
     else{
         // selected 가 head 이면
-        if(GET_PREV(selected) == NULL){
+        if(GET_PREV(to_element) == NULL){
             List->head = element;
         }
         else{
-            selected->front->rear = element;
+            to_element->front->rear = element;
         }
-        element->front = selected->front;
-        element->rear = selected;
-        selected->front = element;
+        element->front = to_element->front;
+        element->rear = to_element;
+        to_element->front = element;
     }
-
-
     List->count++;
     return 0;
 }
 
-int insert_bidata_next(DLinkedList *List, BiData *selected, BiData *element) {
+int insert_bidata_next(DLinkedList *List, BiData *element, BiData *selected){
     // LinkedList가 비어 있을 경우
     if(List->count == 0){
         element->front=NULL, element->rear=NULL;
@@ -165,7 +158,7 @@ int insert_bidata_next(DLinkedList *List, BiData *selected, BiData *element) {
         List->count++;
         return 1;
     }    
-    // selected가 tail이 아니면
+    // selected가 tail 이면
     if(GET_NEXT(selected) == NULL)
         List->tail = element;
     else
@@ -179,6 +172,7 @@ int insert_bidata_next(DLinkedList *List, BiData *selected, BiData *element) {
     return 0;
 }
 
+#if 0
 // 데이터 추출 함수 구현
 BiData * extract_bidata(DLinkedList *List, BiData *selected, int count) {
     // 데이터 추출을 수행
@@ -201,5 +195,4 @@ BiData * extract_bidata(DLinkedList *List, BiData *selected, int count) {
     List->count--;
     return selected;
 }
-
 #endif

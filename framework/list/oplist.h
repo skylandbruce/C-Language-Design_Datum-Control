@@ -7,25 +7,8 @@
 #include "..\data_structure\dlist.h"
 #include "..\utill\utill.h"
 
-#define HEAD 0
-#define TAIL count-1
-#define IS_HEAD(selected) selected->front == NULL  
-#define IS_TAIL(selected) selected->rear == NULL  
-
-
-#define CURRENT(i) i
-#define NEXT(i) i+1
-#define TAIL count-1
-
-#define GET_NEXT(selected) (selected->rear)
-#define GET_PREV(selected) (selected->front)
-#define MOVETO_NEXT(selected) ((selected) = (selected)->rear)
-#define MOVETO_PREV(selected) ((selected) = (selected)->front)
-
-#define JUMP_NEXT(element, step) \
-    for(int i=0; i<step; i++) MOVETO_NEXT(element);
-#define JUMP_PREV(element, step) \
-    for(int i=0; i<step; i++) MOVETO_PREV(element);
+#define MAX_BUFFER 56
+#define MAX_TISSUE 7
 
 
 // // 데이터 정렬 함수 정의
@@ -35,7 +18,7 @@
 // int (*search)(OrderDLinkedList *OrderList, Datum *datum, int count, int (*compare)(Datum *selected, Datum *target));
 
 
-int init_buffer(DLinkedList *DList, BiData *bidata, void *datum, int count);
+int init_buffer(DLinkedList *DList, BiData *bidata, Datum *datum, int count);
 
 int pull_out_DLinkedList(DLinkedList *tissue, DLinkedList *cell, int count);
 
@@ -48,5 +31,8 @@ int attach_controller(DLinkedList *List, BiData *bidata, int count);
 
 int attach_Datum(BiData *bidata, Datum *datum, int count);
 int attach_DLinkedList(BiData *bidata, DLinkedList *datum, int count);
+
+int insert_bidata_prev(DLinkedList *List, BiData *selected, BiData *element);
+int insert_bidata_next(DLinkedList *List, BiData *selected, BiData *element);
 
 

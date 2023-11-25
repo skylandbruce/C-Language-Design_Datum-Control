@@ -17,6 +17,7 @@ int process_test(DLinkedList *tissue, DLinkedList *buffer){
     for(int i=0; i<count; i++){
         datum = (Datum *)(current->datum);
         datum->value -= rand() % MAX_DECLINE_NUM;
+
         if(datum->value <= 0){
             next = GET_NEXT(current);
             put_back_BiData(tissue, current, buffer);
