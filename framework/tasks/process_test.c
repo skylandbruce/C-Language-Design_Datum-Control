@@ -13,7 +13,8 @@ int process_test(DLinkedList *tissue, DLinkedList *buffer){
     Datum *datum;
     BiData *next = NULL;
     int count = tissue->count;
-
+    
+    srand(time(NULL));
     for(int i=0; i<count; i++){
         datum = (Datum *)(current->datum);
         datum->value -= rand() % MAX_DECLINE_NUM;
