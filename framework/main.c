@@ -63,6 +63,10 @@ int main(){
     PATTERN_INT(MAX_TISSUE) = {3,2,2,2,1,1,1};
     SET_PATTERN_INT(pattern_ENTRY_SUP, MAX_TISSUE);
 
+    SET_ASCEND;
+    issort = issort_DLinkedList;
+    issort(&tissue_dlist, compare_int);    
+    
     for(int j=0; j<MAX_LOOP; j++){
 
         // tissue 의 값을 변화 시키고, 조건에 부합하는 cell은 buffer로 돌려 놓는다
@@ -70,11 +74,7 @@ int main(){
             process_test(&cell_tissue[i], &buffer_dlist);
             // MSG_ARRAY(DLinkedList)("output tissue", &cell_tissue[i], 0);
         }
-
-        SET_ASCEND;
-        issort = issort_DLinkedList;
-        issort(&tissue_dlist, compare_int);
-
+        
         // buffer로 부터 bidata를 가져와서 MAX_TISSUE 크기의 tissue를 만든다
         if(pull_out_DLinkedList(&buffer_dlist_sup, &buffer_dlist, ENTRY_SUP) == -1){
             printf("not enough buffer count=%d\n",buffer_dlist.count);
